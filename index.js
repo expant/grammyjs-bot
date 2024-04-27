@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { Bot, GrammyError, HttpError } from 'grammy';
+import { Bot, GrammyError, HttpError, Keyboard } from 'grammy';
+import { words, users } from './src/utils/data.js';
 
-// require('dotenv').config();
 const bot = new Bot(process.env.BOT_API_KEY);
 
 const handleCommand = async (ctx) => {
@@ -11,12 +11,33 @@ const handleCommand = async (ctx) => {
 // TODO: Добавить обработчики :voice, :photo
 
 const handleText = async (ctx) => {
+  const ctxUser = ctx.message.from;
   const txt = ctx.message.text;
+
   if (txt === '/future@PredskazBot') {
-    ctx.reply('Ненавижу предсказания...');
+    await ctx.reply(`Ненавижу предсказания... ${ctxUser.first_name} ${ctxUser.last_name} не надо так(`);
+  }
+
+  const user = users.find((item) => item.id === ctxUser.id);
+  if (!user) {
+    await tx.reply(`Кто это?`);
     return;
   }
-  ctx.reply('Клёвое сообщение чувак!)');
+
+  
+  // await ctx.react('🤡');
+  // switch (user.id) {
+  //   case 452556725: {
+  //     ctx.reply(`${ctxUser.first_name} ${ctxUser.last_name}`);
+  //     break;
+  //   }
+  //   case 522807365:
+  //     ctx.reply(`чё Ванёк?`);
+  //     break;
+  //   default:
+  //     throw new Error(`Unknown user id: ${user.id}!`);
+  // }
+
 };
 
 const handleError = (err) => {
